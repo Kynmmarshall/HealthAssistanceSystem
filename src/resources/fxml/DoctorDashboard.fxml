@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DoctorDashboardController">
+    <VBox.margin>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </VBox.margin>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Label fx:id="welcomeLabel" styleClass="welcomeLabel" HBox.hgrow="ALWAYS"/>
+        <Button text="🔄 Refresh" onAction="#refreshData" styleClass="toggle-button"/>
+        <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
+    </HBox>
+    <HBox spacing="20">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="📋 Upcoming Appointments" styleClass="sectionTitle"/>
+            <TableView fx:id="appointmentTable" prefHeight="250">
+                <columns>
+                    <TableColumn text="Patient" fx:id="colPatient"/>
+                    <TableColumn text="Date &amp; Time" fx:id="colDateTime"/>
+                    <TableColumn text="Status" fx:id="colStatus"/>
+                </columns>
+            </TableView>
+        </VBox>
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="👨‍⚕️ My Profile" styleClass="sectionTitle"/>
+            <TextField fx:id="nameField" promptText="Full Name"/>
+            <TextField fx:id="specField" promptText="Specialization"/>
+            <TextArea fx:id="scheduleField" promptText="Schedule (e.g., Mon 9-12, Wed 14-17)" prefHeight="80"/>
+            <Button text="Save Changes" onAction="#updateProfile" styleClass="saveButton"/>
+        </VBox>
+    </HBox>
+</VBox>

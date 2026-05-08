@@ -1,0 +1,221 @@
+.root {
+    -fx-font-family: "Segoe UI", system-ui, sans-serif;
+    -fx-background-color: #e0eafc;
+}
+
+.rootPane {
+    -fx-background-color: linear-gradient(to bottom right, #e0eafc, #cfdef3);
+}
+
+.titleLabel {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.windowBar {
+    -fx-padding: 8 12 8 12;
+    -fx-background-color: rgba(255, 255, 255, 0.35);
+    -fx-background-radius: 16;
+}
+
+.windowTitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.appIcon {
+    -fx-font-size: 22px;
+}
+
+.loginCard {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);
+    -fx-padding: 30 40 30 40;
+    -fx-min-width: 300;
+}
+
+.inputField {
+    -fx-pref-width: 250;
+    -fx-padding: 10;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+}
+
+.loginButton {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 30;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+.loginButton:hover {
+    -fx-background-color: #2980b9;
+}
+
+.linkButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3498db;
+    -fx-underline: true;
+    -fx-padding: 2 6;
+}
+
+.linkButton:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2980b9;
+}
+
+.toggle-button {
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 22;
+    -fx-padding: 6 14;
+    -fx-cursor: hand;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #1f2d3d;
+}
+
+.exit-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 22;
+    -fx-padding: 6 14;
+    -fx-cursor: hand;
+}
+
+.exit-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.welcomeLabel {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.sectionTitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+.table-view {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #dcdde1;
+}
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+.table-row-cell:even {
+    -fx-background-color: white;
+}
+.table-row-cell:selected {
+    -fx-background-color: #3498db;
+}
+.table-row-cell:selected .text {
+    -fx-fill: white;
+}
+.table-cell:selected {
+    -fx-text-fill: white;
+    -fx-background-color: #3498db;
+}
+
+.button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.cancelButton {
+    -fx-background-color: #e74c3c;
+}
+.cancelButton:hover {
+    -fx-background-color: #c0392b;
+}
+
+.saveButton {
+    -fx-background-color: #2ecc71;
+}
+.saveButton:hover {
+    -fx-background-color: #27ae60;
+}
+
+.bookButton {
+    -fx-background-color: #1abc9c;
+}
+.bookButton:hover {
+    -fx-background-color: #16a085;
+}
+
+.success-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+.success-button:hover {
+    -fx-background-color: #27ae60;
+}
+
+.danger-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+.danger-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.primary-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+.primary-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.secondary-button {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+.secondary-button:hover {
+    -fx-background-color: #7f8c8d;
+}
+
+.tab-pane {
+    -fx-tab-min-height: 35px;
+}
+
+.tab {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.titled-pane {
+    -fx-text-fill: #2c3e50;
+}

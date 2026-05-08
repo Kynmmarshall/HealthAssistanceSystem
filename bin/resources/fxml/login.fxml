@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane styleClass="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+    <VBox alignment="CENTER" spacing="20" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <VBox.margin>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </VBox.margin>
+        <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity" styleClass="windowBar">
+            <Label text="🏥" styleClass="appIcon"/>
+            <Label text="Health Assistance System" styleClass="windowTitle" HBox.hgrow="ALWAYS"/>
+            <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
+            <Button text="Exit" onAction="#handleExit" styleClass="exit-button"/>
+        </HBox>
+        <VBox alignment="CENTER" spacing="15" styleClass="loginCard">
+            <TextField fx:id="usernameField" promptText="Username" styleClass="inputField"/>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="inputField"/>
+            <Label fx:id="errorLabel" style="-fx-text-fill: red;" />
+            <Button text="Login" onAction="#handleLogin" styleClass="loginButton"/>
+            <HBox alignment="CENTER" spacing="6">
+                <Label text="No account yet?" />
+                <Button text="Register" onAction="#handleRegisterLink" styleClass="linkButton"/>
+            </HBox>
+        </VBox>
+        <Label text="© 2025 Health System" style="-fx-font-size: 12px; -fx-text-fill: #aaa;"/>
+    </VBox>
+</AnchorPane>

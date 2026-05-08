@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane styleClass="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+    <VBox alignment="CENTER" spacing="18" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <VBox.margin>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </VBox.margin>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity" styleClass="windowBar">
+            <Label text="🏥" styleClass="appIcon"/>
+            <Label text="Health Assistance System" styleClass="windowTitle" HBox.hgrow="ALWAYS"/>
+            <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
+            <Button text="Exit" onAction="#handleExit" styleClass="exit-button"/>
+        </HBox>
+
+        <VBox alignment="CENTER" spacing="12" styleClass="loginCard">
+            <Label text="Select Account Type" styleClass="sectionTitle"/>
+            <HBox spacing="10" alignment="CENTER">
+                <RadioButton fx:id="patientRadio" text="Patient" selected="true" toggleGroup="$accountType" style="-fx-font-size: 14px;"/>
+                <RadioButton fx:id="doctorRadio" text="Doctor" toggleGroup="$accountType" style="-fx-font-size: 14px;"/>
+                <RadioButton fx:id="adminRadio" text="Admin" toggleGroup="$accountType" style="-fx-font-size: 14px;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <TextField fx:id="fullNameField" promptText="Full Name" styleClass="inputField"/>
+            <TextField fx:id="usernameField" promptText="Username" styleClass="inputField"/>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="inputField"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" styleClass="inputField"/>
+            <TextField fx:id="emailField" promptText="Email (optional)" styleClass="inputField"/>
+            
+            <VBox fx:id="doctorFieldsBox" spacing="10" managed="false" visible="false">
+                <TextField fx:id="specializationField" promptText="Specialization (Doctor)" styleClass="inputField"/>
+                <TextField fx:id="scheduleField" promptText="Schedule (Doctor)" styleClass="inputField"/>
+            </VBox>
+            
+            <Label fx:id="messageLabel" wrapText="true"/>
+
+            <Button text="Register" onAction="#handleRegister" styleClass="loginButton"/>
+            <Button text="Back to Login" onAction="#handleBackToLogin" styleClass="secondary-button"/>
+        </VBox>
+    </VBox>
+</AnchorPane>

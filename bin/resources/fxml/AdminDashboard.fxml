@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
+    <VBox.margin>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </VBox.margin>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Label text="🏥 Admin Control Panel" styleClass="welcomeLabel" HBox.hgrow="ALWAYS"/>
+        <Button text="🔄 Refresh" onAction="#refreshAll" styleClass="toggle-button"/>
+        <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
+    </HBox>
+    
+    <TabPane>
+        <!-- Patients Tab -->
+        <Tab text="Patients" closable="false">
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </VBox.margin>
+                <TableView fx:id="patientTable" prefHeight="250">
+                    <columns>
+                        <TableColumn text="ID" fx:id="colPId" prefWidth="50"/>
+                        <TableColumn text="Name" fx:id="colPName" prefWidth="150"/>
+                        <TableColumn text="Email" fx:id="colPEmail" prefWidth="150"/>
+                        <TableColumn text="Phone" fx:id="colPPhone" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                
+                <TitledPane text="Add/Edit Patient" animated="false" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <GridPane.margin>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </GridPane.margin>
+                        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="pName" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="pEmail" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Phone:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="pPhone" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Label text="Address:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <TextField fx:id="pAddress" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        <Label text="DOB (YYYY-MM-DD):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <TextField fx:id="pDob" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                        <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                            <Button text="Add Patient" onAction="#addPatient" styleClass="success-button"/>
+                            <Button text="Update Selected" onAction="#updateSelectedPatient" styleClass="primary-button"/>
+                            <Button text="Delete Selected" onAction="#deleteSelectedPatient" styleClass="danger-button"/>
+                            <Button text="Clear" onAction="#clearPatientFields" styleClass="secondary-button"/>
+                        </HBox>
+                    </GridPane>
+                </TitledPane>
+            </VBox>
+        </Tab>
+        
+        <!-- Doctors Tab -->
+        <Tab text="Doctors" closable="false">
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </VBox.margin>
+                <TableView fx:id="doctorTable" prefHeight="250">
+                    <columns>
+                        <TableColumn text="ID" fx:id="colDId" prefWidth="50"/>
+                        <TableColumn text="Name" fx:id="colDName" prefWidth="150"/>
+                        <TableColumn text="Specialization" fx:id="colDSpec" prefWidth="150"/>
+                        <TableColumn text="Schedule" fx:id="colDSchedule" prefWidth="200"/>
+                    </columns>
+                </TableView>
+                
+                <TitledPane text="Add/Edit Doctor" animated="false" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <GridPane.margin>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </GridPane.margin>
+                        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="dName" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Specialization:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="dSpec" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Schedule:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="dSchedule" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                            <Button text="Add Doctor" onAction="#addDoctor" styleClass="success-button"/>
+                            <Button text="Update Selected" onAction="#updateSelectedDoctor" styleClass="primary-button"/>
+                            <Button text="Delete Selected" onAction="#deleteSelectedDoctor" styleClass="danger-button"/>
+                            <Button text="Clear" onAction="#clearDoctorFields" styleClass="secondary-button"/>
+                        </HBox>
+                    </GridPane>
+                </TitledPane>
+
+                <TitledPane text="Register Doctor Account" animated="false" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <GridPane.margin>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </GridPane.margin>
+                        <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="dUsername" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="dPassword" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Confirm:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="dConfirmPassword" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                            <Button text="Create Doctor Account" onAction="#registerDoctorAccount" styleClass="success-button"/>
+                            <Button text="Clear" onAction="#clearDoctorAccountFields" styleClass="secondary-button"/>
+                        </HBox>
+                    </GridPane>
+                </TitledPane>
+            </VBox>
+        </Tab>
+        
+        <!-- Appointments Tab -->
+        <Tab text="Appointments" closable="false">
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </VBox.margin>
+                <TableView fx:id="appointmentTable" prefHeight="250">
+                    <columns>
+                        <TableColumn text="Patient" fx:id="colPatient" prefWidth="150"/>
+                        <TableColumn text="Doctor" fx:id="colDoctor" prefWidth="150"/>
+                        <TableColumn text="Date &amp; Time" fx:id="colDateTime" prefWidth="150"/>
+                        <TableColumn text="Status" fx:id="colStatus" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                
+                <TitledPane text="Book Appointment" animated="false" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <GridPane.margin>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </GridPane.margin>
+                        <Label text="Patient:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <ComboBox fx:id="patientCombo" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
+                        <Label text="Doctor:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <ComboBox fx:id="doctorCombo" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200"/>
+                        <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <DatePicker fx:id="appDatePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Label text="Time:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <HBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                            <ComboBox fx:id="hourCombo" promptText="Hour"/>
+                            <Label text=":"/>
+                            <ComboBox fx:id="minuteCombo" promptText="Min"/>
+                        </HBox>
+                        <Button text="Book Appointment" onAction="#bookAppointment" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2" styleClass="success-button"/>
+                    </GridPane>
+                </TitledPane>
+            </VBox>
+        </Tab>
+        
+        <!-- Health Records Tab -->
+        <Tab text="Health Records" closable="false">
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </VBox.margin>
+                <HBox spacing="10">
+                    <Button text="View Health Records" onAction="#viewHealthRecords" styleClass="primary-button"/>
+                    <Button text="Refresh All" onAction="#refreshAll" styleClass="secondary-button"/>
+                </HBox>
+                
+                <TitledPane text="Add Health Record" animated="false" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <GridPane.margin>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </GridPane.margin>
+                        <Label text="Diagnosis:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="diagnosisField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Prescription:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="prescriptionField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Button text="Add Record" onAction="#addHealthRecord" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" styleClass="success-button"/>
+                    </GridPane>
+                </TitledPane>
+                
+                <TextArea fx:id="healthRecordArea" prefHeight="200" editable="false" promptText="Select a patient from Patients tab and click 'View Health Records' to see their records here..."/>
+            </VBox>
+        </Tab>
+        
+        <!-- Admin Profile Tab -->
+        <Tab text="👤 Admin Profile" closable="false">
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </VBox.margin>
+                <Label text="Admin Account Details" styleClass="sectionTitle"/>
+                <HBox spacing="10">
+                    <Label text="Username:" styleClass="sectionTitle" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="adminUsernameLabel" style="-fx-font-size: 14px;"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Role:" styleClass="sectionTitle" style="-fx-font-size: 14px;"/>
+                    <Label text="Administrator" style="-fx-font-size: 14px;"/>
+                </HBox>
+                <Separator/>
+                <Label text="⚙️ System Settings" styleClass="sectionTitle"/>
+                <TextArea fx:id="adminNotesArea" promptText="Admin notes (optional)" prefHeight="150" wrapText="true"/>
+                <HBox spacing="10">
+                    <Button text="Refresh All Data" onAction="#refreshAll" styleClass="primary-button"/>
+                    <Button text="Clear Database Logs" onAction="#clearLogs" styleClass="danger-button"/>
+                </HBox>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

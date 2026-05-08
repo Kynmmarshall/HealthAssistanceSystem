@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PatientDashboardController">
+    <VBox.margin>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </VBox.margin>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Label fx:id="welcomeLabel" styleClass="welcomeLabel" HBox.hgrow="ALWAYS"/>
+        <Button text="🔄 Refresh" onAction="#refreshData" styleClass="toggle-button"/>
+        <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
+    </HBox>
+    <HBox spacing="20">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="📅 Upcoming Appointments" styleClass="sectionTitle"/>
+            <TableView fx:id="upcomingTable" prefHeight="200">
+                <columns>
+                    <TableColumn text="Doctor" fx:id="colDoctor"/>
+                    <TableColumn text="Date &amp; Time" fx:id="colDateTime"/>
+                    <TableColumn text="Status" fx:id="colStatus"/>
+                </columns>
+            </TableView>
+            <Button text="Cancel Selected" onAction="#cancelSelected" styleClass="cancelButton"/>
+        </VBox>
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="📝 Book New Appointment" styleClass="sectionTitle"/>
+            <ComboBox fx:id="doctorCombo" promptText="Select Doctor"/>
+            <DatePicker fx:id="datePicker" promptText="Date"/>
+            <HBox spacing="5">
+                <ComboBox fx:id="hourCombo" promptText="Hour"/>
+                <ComboBox fx:id="minuteCombo" promptText="Minute"/>
+            </HBox>
+            <Button text="Book" onAction="#bookAppointment" styleClass="bookButton"/>
+        </VBox>
+    </HBox>
+    <VBox spacing="5">
+        <Label text="🩺 Health History" styleClass="sectionTitle"/>
+        <TextArea fx:id="healthHistoryArea" editable="false" prefHeight="150"/>
+    </VBox>
+    <TitledPane text="👤 My Profile" animated="false" expanded="false">
+        <VBox spacing="10">
+            <VBox.margin>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </VBox.margin>
+            <TextField fx:id="patientNameField" promptText="Full Name"/>
+            <TextField fx:id="patientEmailField" promptText="Email"/>
+            <TextField fx:id="patientPhoneField" promptText="Phone"/>
+            <HBox spacing="10">
+                <Button text="Save Profile" onAction="#savePatientProfile" styleClass="saveButton"/>
+                <Button text="Clear" onAction="#clearPatientProfile" styleClass="secondary-button"/>
+            </HBox>
+        </VBox>
+    </TitledPane>
+</VBox>
