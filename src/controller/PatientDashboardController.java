@@ -54,10 +54,11 @@ public class PatientDashboardController {
         this.currentUser = user;
         patient = PatientDAO.getPatientById(user.getPersonId());
         if (patient == null) {
-            // Auto-create patient if not exists (for demo) - normally you'd have registration
-            patient = new Patient();
-            patient.setId(1);
-            patient.setName("Demo Patient");
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Patient profile not found for this account. Please re-login or contact admin.");
+            alert.setTitle("Profile Error");
+            alert.showAndWait();
+            return;
         }
         System.out.println("[DEBUG] PatientDashboard - Current user: " + user.getUsername() + ", Person ID: " + user.getPersonId() + ", Patient ID: " + patient.getId() + ", Patient Name: " + patient.getName());
         welcomeLabel.setText("Welcome, " + patient.getName());
@@ -87,7 +88,7 @@ public class PatientDashboardController {
             @Override public String toString(Doctor d) { return d == null ? "" : d.getName() + " (" + d.getSpecialization() + ")"; }
             @Override public Doctor fromString(String s) { return null; }
         });
-        hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17","18","19","20","21"));
+        hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17","22"));
         minuteCombo.setItems(FXCollections.observableArrayList("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"));
         
         // Disable past dates in DatePicker
@@ -109,8 +110,23 @@ public class PatientDashboardController {
 
     @FXML
     public void bookAppointment() {
+        if (patient == null || patient.getId() <= 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Cannot book appointment because patient profile is invalid.");
+            alert.setTitle("Booking Error");
+            alert.showAndWait();
+            return;
+        }
+
         if (doctorCombo.getValue() == null || datePicker.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Please select doctor and date");
+            alert.showAndWait();
+            return;
+        }
+
+        if (hourCombo.getValue() == null || minuteCombo.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select hour and minute.");
+            alert.setTitle("Missing Time");
             alert.showAndWait();
             return;
         }
@@ -137,7 +153,9 @@ public class PatientDashboardController {
         boolean success = AppointmentDAO.bookAppointment(app);
         Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.WARNING);
         alert.setTitle(success ? "Success" : "Conflict");
-        alert.setContentText(success ? "Appointment booked!" : "Doctor not available at that time.");
+        alert.setContentText(success
+            ? "Appointment booked and saved to database."
+            : "Could not book appointment. The selected doctor/time already has an active appointment.");
         alert.showAndWait();
         if (success) {
 			loadUpcomingAppointments();

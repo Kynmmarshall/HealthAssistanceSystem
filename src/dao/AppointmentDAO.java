@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class AppointmentDAO {
 
     // Check for scheduling conflict
     public static boolean isDoctorAvailable(int doctorId, LocalDateTime dateTime) {
-        String sql = "SELECT id FROM appointments WHERE doctor_id = ? AND appointment_date = ?";
+        String sql = "SELECT id FROM appointments WHERE doctor_id = ? AND appointment_date = ? AND status NOT IN ('Cancelled', 'Expired')";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, doctorId);
@@ -30,25 +31,56 @@ public class AppointmentDAO {
     }
 
     public static boolean bookAppointment(Appointment app) {
-        if (!isDoctorAvailable(app.getDoctorId(), app.getAppointmentDate())) {
-			return false;
-		}
-        String sql = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, status) VALUES (?,?,?,?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, app.getPatientId());
-            stmt.setInt(2, app.getDoctorId());
-            stmt.setTimestamp(3, Timestamp.valueOf(app.getAppointmentDate()));
-            stmt.setString(4, app.getStatus());
-            int affected = stmt.executeUpdate();
-            if (affected == 1) {
-                ResultSet rs = stmt.getGeneratedKeys();
+        String findSql = "SELECT id, status FROM appointments WHERE doctor_id = ? AND appointment_date = ? LIMIT 1";
+        String insertSql = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, status) VALUES (?,?,?,?)";
+        String reactivateSql = "UPDATE appointments SET patient_id = ?, status = 'Scheduled' WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection()) {
+            try (PreparedStatement findStmt = conn.prepareStatement(findSql)) {
+                findStmt.setInt(1, app.getDoctorId());
+                findStmt.setTimestamp(2, Timestamp.valueOf(app.getAppointmentDate()));
+                ResultSet rs = findStmt.executeQuery();
+
                 if (rs.next()) {
-					app.setId(rs.getInt(1));
-				}
-                return true;
+                    int existingId = rs.getInt("id");
+                    String existingStatus = rs.getString("status");
+
+                    if ("Cancelled".equalsIgnoreCase(existingStatus) || "Expired".equalsIgnoreCase(existingStatus)) {
+                        try (PreparedStatement reactivateStmt = conn.prepareStatement(reactivateSql)) {
+                            reactivateStmt.setInt(1, app.getPatientId());
+                            reactivateStmt.setInt(2, existingId);
+                            int updated = reactivateStmt.executeUpdate();
+                            if (updated == 1) {
+                                app.setId(existingId);
+                                app.setStatus("Scheduled");
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
+                    // Active appointment already exists at this doctor/time slot.
+                    return false;
+                }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+                insertStmt.setInt(1, app.getPatientId());
+                insertStmt.setInt(2, app.getDoctorId());
+                insertStmt.setTimestamp(3, Timestamp.valueOf(app.getAppointmentDate()));
+                insertStmt.setString(4, app.getStatus());
+                int affected = insertStmt.executeUpdate();
+                if (affected == 1) {
+                    ResultSet keys = insertStmt.getGeneratedKeys();
+                    if (keys.next()) {
+                        app.setId(keys.getInt(1));
+                    }
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -64,7 +96,7 @@ public class AppointmentDAO {
 
     public static List<Appointment> getUpcomingAppointmentsForPatient(int patientId) {
         List<Appointment> list = new ArrayList<>();
-        String sql = "SELECT * FROM appointments WHERE patient_id = ? AND appointment_date >= DATE(NOW()) AND status != 'Cancelled' ORDER BY appointment_date";
+        String sql = "SELECT * FROM appointments WHERE patient_id = ? ORDER BY appointment_date DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, patientId);
@@ -86,7 +118,7 @@ public class AppointmentDAO {
 
     public static List<Appointment> getUpcomingAppointmentsForDoctor(int doctorId) {
         List<Appointment> list = new ArrayList<>();
-        String sql = "SELECT * FROM appointments WHERE doctor_id = ? AND appointment_date >= DATE(NOW()) AND status != 'Cancelled' ORDER BY appointment_date";
+        String sql = "SELECT * FROM appointments WHERE doctor_id = ? ORDER BY appointment_date DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, doctorId);
@@ -108,10 +140,14 @@ public class AppointmentDAO {
 
     public static List<Appointment> getUpcomingAppointments() {
         List<Appointment> list = new ArrayList<>();
-        String sql = "SELECT * FROM appointments WHERE appointment_date > NOW() AND status != 'Cancelled' ORDER BY appointment_date";
+        // Use app local-day boundary instead of DB NOW()/DATE(NOW()) to avoid timezone drift.
+        String sql = "SELECT * FROM appointments WHERE appointment_date >= ? AND status NOT IN ('Cancelled', 'Expired') ORDER BY appointment_date";
         try (Connection conn = DBConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            LocalDateTime dayStart = LocalDate.now().atStartOfDay();
+            stmt.setTimestamp(1, Timestamp.valueOf(dayStart));
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("[DEBUG] Reminder query: " + sql + " | dayStart=" + dayStart);
             while (rs.next()) {
                 Appointment a = new Appointment();
                 a.setId(rs.getInt("id"));
@@ -121,8 +157,22 @@ public class AppointmentDAO {
                 a.setStatus(rs.getString("status"));
                 list.add(a);
             }
+            System.out.println("[DEBUG] Reminder found " + list.size() + " appointments");
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
+    }
+
+    public static int markExpiredAppointments() {
+        String sql = "UPDATE appointments SET status='Expired' WHERE appointment_date < ? AND status NOT IN ('Cancelled', 'Expired')";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            LocalDateTime now = LocalDateTime.now();
+            stmt.setTimestamp(1, Timestamp.valueOf(now));
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static List<Appointment> getAllAppointments() {

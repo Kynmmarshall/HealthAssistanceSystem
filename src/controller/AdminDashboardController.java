@@ -140,7 +140,7 @@ public class AdminDashboardController {
         }
 
         if (hourCombo != null) {
-            hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17","18","19","20"));
+            hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17"));
         }
 
         if (minuteCombo != null) {
