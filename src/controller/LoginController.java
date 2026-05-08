@@ -9,15 +9,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.User;
-import util.UiUtils;
 
 public class LoginController {
 
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
+
+    private double xOffset;
+    private double yOffset;
 
     @FXML
     public void handleRegisterLink() {
@@ -26,12 +29,27 @@ public class LoginController {
 
     @FXML
     public void toggleFullscreen() {
-        UiUtils.toggleFullscreen(usernameField);
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setFullScreen(!stage.isFullScreen());
     }
 
     @FXML
     public void handleExit() {
-        UiUtils.closeWindow(usernameField);
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    public void handleTitleBarPressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+
+    @FXML
+    public void handleTitleBarDragged(MouseEvent event) {
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
     }
 
     public void handleLogin() {

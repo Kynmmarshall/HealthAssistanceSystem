@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 
 <VBox spacing="15" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
@@ -12,10 +13,16 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
     
-    <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Label text="🏥 Admin Control Panel" styleClass="welcomeLabel" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_RIGHT" spacing="10" onMousePressed="#handleTitleBarPressed" onMouseDragged="#handleTitleBarDragged">
+        <ImageView fitHeight="34" fitWidth="34" preserveRatio="true" styleClass="appIcon">
+            <image>
+                <Image url="@../images/logo.png" />
+            </image>
+        </ImageView>
+        <Label text="Admin Control Panel" styleClass="welcomeLabel" HBox.hgrow="ALWAYS"/>
         <Button text="🔄 Refresh" onAction="#refreshAll" styleClass="toggle-button"/>
         <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
+        <Button text="Logout" onAction="#handleLogout" styleClass="exit-button"/>
     </HBox>
     
     <TabPane>

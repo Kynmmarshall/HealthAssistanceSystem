@@ -12,6 +12,9 @@ import dao.PatientDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -21,6 +24,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Appointment;
 import model.Doctor;
@@ -42,6 +47,8 @@ public class PatientDashboardController {
 
     private User currentUser;
     private Patient patient;
+    private double xOffset;
+    private double yOffset;
 
     public void initData(User user) {
         this.currentUser = user;
@@ -80,8 +87,8 @@ public class PatientDashboardController {
             @Override public String toString(Doctor d) { return d == null ? "" : d.getName() + " (" + d.getSpecialization() + ")"; }
             @Override public Doctor fromString(String s) { return null; }
         });
-        hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17"));
-        minuteCombo.setItems(FXCollections.observableArrayList("00","15","30","45"));
+        hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17","18","19","20","21"));
+        minuteCombo.setItems(FXCollections.observableArrayList("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"));
         
         // Disable past dates in DatePicker
         datePicker.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
@@ -162,6 +169,19 @@ public class PatientDashboardController {
         UiUtils.toggleFullscreen(welcomeLabel);
     }
 
+    @FXML
+    public void handleTitleBarPressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+
+    @FXML
+    public void handleTitleBarDragged(MouseEvent event) {
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
     private void loadHealthRecords() {
         List<HealthRecord> records = HealthRecordDAO.getRecordsByPatient(patient.getId());
         StringBuilder sb = new StringBuilder();
@@ -198,5 +218,21 @@ public class PatientDashboardController {
     @FXML
     public void clearPatientProfile() {
         loadPatientProfile();
+    }
+
+    @FXML
+    public void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/login.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 400, 500);
+            scene.getStylesheets().add(getClass().getResource("/resources/css/style.css").toExternalForm());
+            Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Health Assistance System - Login");
+            stage.centerOnScreen();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

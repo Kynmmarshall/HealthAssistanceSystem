@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 
 <AnchorPane styleClass="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
@@ -9,8 +10,12 @@
         <VBox.margin>
             <Insets top="20" right="20" bottom="20" left="20"/>
         </VBox.margin>
-        <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity" styleClass="windowBar">
-            <Label text="🏥" styleClass="appIcon"/>
+        <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity" styleClass="windowBar" onMousePressed="#handleTitleBarPressed" onMouseDragged="#handleTitleBarDragged">
+            <ImageView fitHeight="34" fitWidth="34" preserveRatio="true" styleClass="appIcon">
+                <image>
+                    <Image url="@../images/logo.png" />
+                </image>
+            </ImageView>
             <Label text="Health Assistance System" styleClass="windowTitle" HBox.hgrow="ALWAYS"/>
             <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
             <Button text="Exit" onAction="#handleExit" styleClass="exit-button"/>

@@ -12,6 +12,9 @@ import dao.PatientDAO;
 import dao.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -24,9 +27,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Appointment;
 import model.Doctor;
@@ -61,6 +66,8 @@ public class AdminDashboardController {
     @FXML private TextArea adminNotesArea;
 
     private User currentUser;
+    private double xOffset;
+    private double yOffset;
 
     // Initialize method called by FXML loader
     public void initialize() {
@@ -133,11 +140,11 @@ public class AdminDashboardController {
         }
 
         if (hourCombo != null) {
-            hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17"));
+            hourCombo.setItems(FXCollections.observableArrayList("08","09","10","11","12","13","14","15","16","17","18","19","20"));
         }
 
         if (minuteCombo != null) {
-            minuteCombo.setItems(FXCollections.observableArrayList("00","15","30","45"));
+            minuteCombo.setItems(FXCollections.observableArrayList("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"));
         }
         
         // Disable past dates in appointment DatePicker
@@ -439,6 +446,19 @@ public class AdminDashboardController {
     }
 
     @FXML
+    public void handleTitleBarPressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+
+    @FXML
+    public void handleTitleBarDragged(MouseEvent event) {
+        Stage stage = (Stage) adminUsernameLabel.getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
     public void clearLogs() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Clear all system logs? This cannot be undone.");
         if (confirm.showAndWait().get() == ButtonType.OK) {
@@ -483,5 +503,21 @@ public class AdminDashboardController {
     private void showError(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/login.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 400, 500);
+            scene.getStylesheets().add(getClass().getResource("/resources/css/style.css").toExternalForm());
+            Stage stage = (Stage) adminUsernameLabel.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Health Assistance System - Login");
+            stage.centerOnScreen();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

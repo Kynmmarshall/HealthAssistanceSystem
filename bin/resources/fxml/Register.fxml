@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
 
 <AnchorPane styleClass="rootPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
     <VBox alignment="CENTER" spacing="18" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
@@ -10,8 +11,12 @@
             <Insets top="20" right="20" bottom="20" left="20"/>
         </VBox.margin>
 
-        <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity" styleClass="windowBar">
-            <Label text="🏥" styleClass="appIcon"/>
+        <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="Infinity" styleClass="windowBar" onMousePressed="#handleTitleBarPressed" onMouseDragged="#handleTitleBarDragged">
+            <ImageView fitHeight="34" fitWidth="34" preserveRatio="true" styleClass="appIcon">
+                <image>
+                    <Image url="@../images/logo.png" />
+                </image>
+            </ImageView>
             <Label text="Health Assistance System" styleClass="windowTitle" HBox.hgrow="ALWAYS"/>
             <Button text="Fullscreen" onAction="#toggleFullscreen" styleClass="toggle-button"/>
             <Button text="Exit" onAction="#handleExit" styleClass="exit-button"/>
@@ -19,11 +24,7 @@
 
         <VBox alignment="CENTER" spacing="12" styleClass="loginCard">
             <Label text="Select Account Type" styleClass="sectionTitle"/>
-            <HBox spacing="10" alignment="CENTER">
-                <RadioButton fx:id="patientRadio" text="Patient" selected="true" toggleGroup="$accountType" style="-fx-font-size: 14px;"/>
-                <RadioButton fx:id="doctorRadio" text="Doctor" toggleGroup="$accountType" style="-fx-font-size: 14px;"/>
-                <RadioButton fx:id="adminRadio" text="Admin" toggleGroup="$accountType" style="-fx-font-size: 14px;"/>
-            </HBox>
+            <ComboBox fx:id="accountTypeCombo" promptText="Choose account type..." prefWidth="200" styleClass="inputField"/>
             
             <Separator/>
             
