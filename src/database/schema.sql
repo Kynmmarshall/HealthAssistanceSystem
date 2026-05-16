@@ -51,10 +51,16 @@ CREATE TABLE IF NOT EXISTS health_records (
     FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
 );
 
--- Insert sample admin user (password: admin123)
-INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'Admin');
+-- Insert sample data (CORRECT ORDER)
+INSERT INTO patients (name, email, phone, dob, address) VALUES 
+('John Patient', 'patient@email.com', '123456789', '1990-05-15', '123 Patient St');
 
--- Insert sample doctor (optional)
-INSERT INTO doctors (name, specialization, schedule) VALUES ('Dr. Smith', 'Cardiology', 'Mon 9-12, Thu 14-17');
--- Then link to users if you want doctor login: 
--- INSERT INTO users (username, password, role, person_id) VALUES ('smith', 'pass123', 'Doctor', 1);
+INSERT INTO doctors (name, specialization, schedule) VALUES 
+('Dr. Smith', 'Cardiology', 'Mon 9-12, Thu 14-17');
+
+INSERT INTO users (username, password, role) VALUES 
+('admin', 'admin123', 'Admin');
+
+INSERT INTO users (username, password, role, person_id) VALUES 
+('patient', 'patient123', 'Patient', 1),
+('doctor', 'doctor123', 'Doctor', 1);
