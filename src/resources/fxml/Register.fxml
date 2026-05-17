@@ -30,8 +30,20 @@
             
             <TextField fx:id="fullNameField" promptText="Full Name" styleClass="inputField"/>
             <TextField fx:id="usernameField" promptText="Username" styleClass="inputField"/>
-            <PasswordField fx:id="passwordField" promptText="Password" styleClass="inputField"/>
-            <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" styleClass="inputField"/>
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <StackPane HBox.hgrow="ALWAYS">
+                    <PasswordField fx:id="passwordField" promptText="Password" styleClass="inputField"/>
+                    <TextField fx:id="visiblePasswordField" promptText="Password" styleClass="inputField" managed="false" visible="false"/>
+                </StackPane>
+                <CheckBox fx:id="showPasswordCheckbox" text="Show" onAction="#togglePasswordVisibility" styleClass="passwordToggle"/>
+            </HBox>
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <StackPane HBox.hgrow="ALWAYS">
+                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" styleClass="inputField"/>
+                    <TextField fx:id="visibleConfirmPasswordField" promptText="Confirm Password" styleClass="inputField" managed="false" visible="false"/>
+                </StackPane>
+                <CheckBox fx:id="showConfirmPasswordCheckbox" text="Show" onAction="#toggleConfirmPasswordVisibility" styleClass="passwordToggle"/>
+            </HBox>
             <TextField fx:id="emailField" promptText="Email (optional)" styleClass="inputField"/>
             
             <VBox fx:id="doctorFieldsBox" spacing="10" managed="false" visible="false">

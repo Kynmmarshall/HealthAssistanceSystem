@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -24,7 +25,11 @@ public class RegisterController {
     @FXML private TextField fullNameField;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    @FXML private TextField visiblePasswordField;
+    @FXML private CheckBox showPasswordCheckbox;
     @FXML private PasswordField confirmPasswordField;
+    @FXML private TextField visibleConfirmPasswordField;
+    @FXML private CheckBox showConfirmPasswordCheckbox;
     @FXML private TextField emailField;
     @FXML private TextField specializationField;
     @FXML private TextField scheduleField;
@@ -47,11 +52,45 @@ public class RegisterController {
     }
 
     @FXML
+    public void togglePasswordVisibility() {
+        if (showPasswordCheckbox.isSelected()) {
+            visiblePasswordField.setText(passwordField.getText());
+            visiblePasswordField.setVisible(true);
+            visiblePasswordField.setManaged(true);
+            passwordField.setVisible(false);
+            passwordField.setManaged(false);
+        } else {
+            passwordField.setText(visiblePasswordField.getText());
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+        }
+    }
+
+    @FXML
+    public void toggleConfirmPasswordVisibility() {
+        if (showConfirmPasswordCheckbox.isSelected()) {
+            visibleConfirmPasswordField.setText(confirmPasswordField.getText());
+            visibleConfirmPasswordField.setVisible(true);
+            visibleConfirmPasswordField.setManaged(true);
+            confirmPasswordField.setVisible(false);
+            confirmPasswordField.setManaged(false);
+        } else {
+            confirmPasswordField.setText(visibleConfirmPasswordField.getText());
+            confirmPasswordField.setVisible(true);
+            confirmPasswordField.setManaged(true);
+            visibleConfirmPasswordField.setVisible(false);
+            visibleConfirmPasswordField.setManaged(false);
+        }
+    }
+
+    @FXML
     public void handleRegister() {
         String fullName = fullNameField.getText().trim();
         String username = usernameField.getText().trim();
-        String password = passwordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
+        String password = showPasswordCheckbox.isSelected() ? visiblePasswordField.getText() : passwordField.getText();
+        String confirmPassword = showConfirmPasswordCheckbox.isSelected() ? visibleConfirmPasswordField.getText() : confirmPasswordField.getText();
         String accountType = accountTypeCombo.getValue();
 
         if (fullName.isEmpty() || username.isEmpty() || password.isEmpty()) {

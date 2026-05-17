@@ -117,6 +117,16 @@
     -fx-background-color: #c0392b;
 }
 
+.passwordToggle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 8 10 8 6;
+}
+
+.passwordToggle:hover {
+    -fx-text-fill: #3498db;
+}
+
 .welcomeLabel {
     -fx-font-size: 24px;
     -fx-font-weight: bold;

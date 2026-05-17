@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,10 +18,29 @@ public class LoginController {
 
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    @FXML private TextField visiblePasswordField;
+    @FXML private CheckBox showPasswordCheckbox;
     @FXML private Label errorLabel;
 
     private double xOffset;
     private double yOffset;
+
+    @FXML
+    public void togglePasswordVisibility() {
+        if (showPasswordCheckbox.isSelected()) {
+            visiblePasswordField.setText(passwordField.getText());
+            visiblePasswordField.setVisible(true);
+            visiblePasswordField.setManaged(true);
+            passwordField.setVisible(false);
+            passwordField.setManaged(false);
+        } else {
+            passwordField.setText(visiblePasswordField.getText());
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+        }
+    }
 
     @FXML
     public void handleRegisterLink() {
@@ -54,7 +74,7 @@ public class LoginController {
 
     public void handleLogin() {
         String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
+        String password = showPasswordCheckbox.isSelected() ? visiblePasswordField.getText().trim() : passwordField.getText().trim();
 
         User user = UserDAO.authenticate(username, password);
         if (user != null) {
