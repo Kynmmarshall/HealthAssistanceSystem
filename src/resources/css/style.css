@@ -38,6 +38,26 @@
     -fx-min-width: 300;
 }
 
+.testAccountsCard {
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+    -fx-background-radius: 14;
+    -fx-border-color: #cfd8dc;
+    -fx-border-radius: 14;
+    -fx-padding: 12 16 12 16;
+    -fx-min-width: 300;
+}
+
+.testAccountsTitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.testAccountItem {
+    -fx-font-size: 12px;
+    -fx-text-fill: #34495e;
+}
+
 .inputField {
     -fx-pref-width: 250;
     -fx-padding: 10;

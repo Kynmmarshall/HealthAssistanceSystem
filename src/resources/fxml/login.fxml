@@ -30,6 +30,12 @@
                 <Button text="Register" onAction="#handleRegisterLink" styleClass="linkButton"/>
             </HBox>
         </VBox>
+        <VBox alignment="CENTER_LEFT" spacing="8" styleClass="testAccountsCard">
+            <Label text="Test Accounts" styleClass="testAccountsTitle"/>
+            <Label text="Admin: admin / admin123" styleClass="testAccountItem"/>
+            <Label text="Patient: patient / patient123" styleClass="testAccountItem"/>
+            <Label text="Doctor: doctor / doctor123" styleClass="testAccountItem"/>
+        </VBox>
         <Label text="© 2025 Health System" style="-fx-font-size: 12px; -fx-text-fill: #aaa;"/>
     </VBox>
 </AnchorPane>
