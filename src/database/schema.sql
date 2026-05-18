@@ -2,6 +2,10 @@
 CREATE DATABASE IF NOT EXISTS health_assistance;
 USE health_assistance;
 
+CREATE USER IF NOT EXISTS 'health_user'@'localhost' IDENTIFIED BY 'health_pass_2026';
+GRANT ALL PRIVILEGES ON health_assistance.* TO 'health_user'@'localhost';
+FLUSH PRIVILEGES;
+
 -- Users table (for login)
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,

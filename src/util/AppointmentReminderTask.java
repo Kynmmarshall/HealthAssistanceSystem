@@ -93,7 +93,7 @@ public class AppointmentReminderTask implements Runnable {
                         });
                     }
                 }
-                Thread.sleep(5000); // check every 5 seconds for better responsiveness
+                Thread.sleep(30000); // check every 5 seconds for better responsiveness
             } catch (InterruptedException e) {
                 break;
             } catch (Exception e) {
